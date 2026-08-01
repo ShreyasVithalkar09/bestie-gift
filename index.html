@@ -1,240 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Gift for My Bestie</title>
-    <!-- Beautiful cursive font for the letter -->
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-        }
-        .container {
-            text-align: center;
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Friendship Day! 💖</title>
+  
+  <!-- Google Fonts for aesthetic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library for the celebration effect -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        /* --- STAGE 1: CLAIM BUTTON --- */
-        #claim-btn {
-            background: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
-            transition: transform 0.2s, background-color 0.2s;
-            animation: pulse 1.5s infinite;
-        }
-        #claim-btn:hover {
-            background: #ff758f;
-            transform: scale(1.05);
-        }
+  <style>
+    /* Global Styles & Aesthetics */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --accent-color: #ff6b81;
+      --accent-hover: #ff4757;
+      --text-dark: #2f3542;
+    }
 
-        /* --- STAGE 2: GIFT BOX --- */
-        .gift-container {
-            display: none;
-            position: relative;
-            cursor: pointer;
-            margin: 50px auto;
-            width: 160px;
-            height: 160px;
-        }
-        .gift-box {
-            background: #ff4d6d;
-            width: 150px;
-            height: 150px;
-            position: absolute;
-            bottom: 0;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-        /* Ribbon horizontal */
-        .gift-box::before {
-            content: '';
-            position: absolute;
-            background: #fff0f3;
-            width: 100%;
-            height: 30px;
-            top: 60px;
-            left: 0;
-        }
-        /* Ribbon vertical */
-        .gift-box::after {
-            content: '';
-            position: absolute;
-            background: #fff0f3;
-            width: 30px;
-            height: 100%;
-            left: 60px;
-            top: 0;
-        }
-        .gift-lid {
-            background: #ff758f;
-            width: 160px;
-            height: 40px;
-            position: absolute;
-            top: -10px;
-            left: -5px;
-            border-radius: 5px;
-            z-index: 2;
-            transition: transform 0.8s ease-in-out;
-        }
-        /* Lid ribbon vertical */
-        .gift-lid::after {
-            content: '';
-            position: absolute;
-            background: #fff0f3;
-            width: 30px;
-            height: 100%;
-            left: 65px;
-        }
-        /* Click instructions instruction */
-        .hint-text {
-            display: none;
-            color: #ff4d6d;
-            font-weight: 600;
-            margin-top: 15px;
-            animation: bounce 2s infinite;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Open animation state */
-        .gift-container.open .gift-lid {
-            transform: translateY(-80px) rotate(-20px);
-            opacity: 0;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text-dark);
+    }
 
-        /* --- STAGE 3: THE LETTER --- */
-        .letter-card {
-            display: none;
-            background: #ffffff;
-            padding: 35px 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 2px dashed #ffc2d1;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.6s ease-out;
-            position: relative;
-        }
-        .letter-card.show {
-            display: block;
-            opacity: 1;
-            transform: scale(1);
-        }
-        .letter-text {
-            font-family: 'Caveat', cursive;
-            font-size: 1.7rem;
-            color: #4a4a4a;
-            line-height: 1.5;
-            text-align: left;
-        }
-        .letter-text p {
-            margin-bottom: 15px;
-        }
-        .signature {
-            text-align: right;
-            margin-top: 25px;
-            font-size: 2rem;
-            color: #ff4d6d;
-        }
-        
-        /* Sparkle Hearts Decoration */
-        .heart-deco {
-            color: #ff4d6d;
-            font-size: 1.5rem;
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            animation: float 2s infinite ease-in-out;
-        }
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
 
-        /* --- ANIMATIONS --- */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(10deg); }
-            100% { transform: translateY(0) rotate(0deg); }
-        }
-    </style>
+    /* Floating Hearts Background Animation */
+    .bg-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floating-heart {
+      position: absolute;
+      list-style: none;
+      opacity: 0.6;
+      animation: floatUp 8s infinite linear;
+      bottom: -50px;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Screen Transition Controls */
+    .screen {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 107, 129, 0.3);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 25px rgba(255, 107, 129, 0.4);
+    }
+
+    /* Screen 1: Welcome */
+    .welcome-card {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .welcome-card h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .welcome-card p {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    /* Screen 2: Gift Box */
+    .gift-box-wrapper {
+      margin: 30px auto;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .gift-emoji {
+      font-size: 100px;
+      display: inline-block;
+      animation: pulse 1.5s infinite ease-in-out;
+      transition: transform 0.3s;
+    }
+
+    .gift-box-wrapper:hover .gift-emoji {
+      animation: shake 0.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes shake {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-8deg); }
+      75% { transform: rotate(8deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Screen 3: The Letter */
+    .letter-card {
+      background: var(--card-bg);
+      padding: 35px 25px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+      text-align: left;
+      position: relative;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .letter-header {
+      font-family: 'Caveat', cursive;
+      font-size: 2.2rem;
+      color: var(--accent-color);
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    /* Message Body Styling */
+    .letter-body {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #444;
+      white-space: pre-line; /* Preserves line breaks in your text */
+      margin-bottom: 20px;
+    }
+
+    .letter-footer {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      text-align: right;
+      color: var(--accent-color);
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Step 1: The Claim Button -->
-        <button id="claim-btn" onclick="revealGift()">Claim My Gift 🎁</button>
+  <!-- Floating Hearts Background -->
+  <ul class="bg-hearts" id="hearts-container"></ul>
 
-        <!-- Step 2: The Interactive Gift Box -->
-        <div id="gift-area" class="gift-container" onclick="openGift()">
-            <div class="gift-lid"></div>
-            <div class="gift-box"></div>
-        </div>
-        <p id="hint" class="hint-text">Tap the box to open it! ✨</p>
-
-        <!-- Step 3: The Custom Letter -->
-        <div id="letter" class="letter-card">
-            <span class="heart-deco">💖✨</span>
-            <div class="letter-text">
-                <p>Dear bestie,</p>
-                <p>You entered my life and it brightened up. In every world, every life I would still choose you as my bestie.</p>
-                <p>I can’t write here everything… it would be a book. So you’re not just my friend, you are a blessing.</p>
-                <div class="signature">- Shreyas</div>
-            </div>
-        </div>
+  <div class="container">
+    
+    <!-- STEP 1: Landing Page -->
+    <div id="screen-1" class="screen active">
+      <div class="welcome-card">
+        <h1>Hey Bestie! ✨</h1>
+        <p>I put together a little surprise for you...</p>
+        <button class="btn" onclick="goToScreen(2)">
+          Click Me 🎁
+        </button>
+      </div>
     </div>
 
-    <script>
-        function revealGift() {
-            // Hide claim button
-            document.getElementById('claim-btn').style.display = 'none';
-            // Show gift box and instructions
-            document.getElementById('gift-area').style.display = 'block';
-            document.getElementById('hint').style.display = 'block';
-        }
+    <!-- STEP 2: Gift Box -->
+    <div id="screen-2" class="screen">
+      <div class="welcome-card">
+        <h2>You've Got a Gift! 💌</h2>
+        <p>Tap the gift box to open it</p>
+        <div class="gift-box-wrapper" onclick="openGift()">
+          <span class="gift-emoji" id="gift-icon">🎁</span>
+        </div>
+        <div>
+          <button class="btn" onclick="openGift()">Open Gift ✨</button>
+        </div>
+      </div>
+    </div>
 
-        function openGift() {
-            var giftContainer = document.getElementById('gift-area');
-            var hint = document.getElementById('hint');
-            var letter = document.getElementById('letter');
-            
-            // Trigger box open animation
-            giftContainer.classList.add('open');
-            hint.style.display = 'none';
-            
-            // Smoothly display the handwritten letter after box lid flies off
-            setTimeout(function() {
-                giftContainer.style.display = 'none';
-                letter.classList.add('show');
-            }, 600);
-        }
-    </script>
+    <!-- STEP 3: The Letter -->
+    <div id="screen-3" class="screen">
+      <div class="letter-card">
+        <div class="letter-header">Happy Friendship Day! 🌸</div>
+        
+        <!-- ============================================================ -->
+        <!-- 📝 PASTE YOUR PERSONAL MESSAGE HERE -->
+        <!-- ============================================================ -->
+        <div class="letter-body">
+Hey Dear Sonpari,
 
+First of all I would like to take your 5 precious minutes. Okay! ⏱️😊 So let me Thank You for coming in my life, brightening my life, making it more Joyful. ✨💛
+
+Wish you the Happiest Friendship Day Dear! 🌸💖 I know just this message is not enough. There is a lot I could say and write that will need a specific book or a specific session. 📖💬 I can talk On-and-On with you, Thanking you, Appreciating you for everything. 🥰🤗
+
+I know that I live far from you right now. 🥹📍 So can't give you any gifts in person. So, I wanted to give this message through a digital form of a gift for now! 🎁💌
+
+Once again, Happiest Friendship Day! 🎉🥳❤️
+        </div>
+        <!-- ============================================================ -->
+
+        <div class="letter-footer">
+          Forever & Always, <br>
+          Shreyas
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Navigation Control
+    function goToScreen(screenNumber) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(`screen-${screenNumber}`).classList.add('active');
+    }
+
+    // Gift Opening Handler
+    function openGift() {
+      const giftIcon = document.getElementById('gift-icon');
+      
+      // Pop Animation for Gift Icon
+      giftIcon.style.transform = "scale(1.4) rotate(15deg)";
+      
+      setTimeout(() => {
+        goToScreen(3);
+        triggerConfetti();
+      }, 400);
+    }
+
+    // Confetti Explosion
+    function triggerConfetti() {
+      var count = 200;
+      var defaults = {
+        origin: { y: 0.7 }
+      };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+
+    // Dynamic Floating Hearts Background
+    const heartsContainer = document.getElementById('hearts-container');
+    const heartSymbols = ['💖', '🌸', '✨', '💕', '🌷'];
+
+    for (let i = 0; i < 15; i++) {
+      const li = document.createElement('li');
+      li.className = 'floating-heart';
+      li.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+      li.style.left = `${Math.random() * 100}%`;
+      li.style.animationDelay = `${Math.random() * 5}s`;
+      li.style.animationDuration = `${6 + Math.random() * 6}s`;
+      li.style.fontSize = `${16 + Math.random() * 20}px`;
+      heartsContainer.appendChild(li);
+    }
+  </script>
 </body>
 </html>
